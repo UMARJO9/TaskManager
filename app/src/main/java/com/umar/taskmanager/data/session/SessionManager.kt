@@ -1,0 +1,28 @@
+package com.umar.taskmanager.data.session
+
+import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.longPreferencesKey
+import androidx.datastore.preferences.preferencesDataStore
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+
+val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "session")
+class SessionManager(
+    private val dataStore: DataStore<Preferences>
+) {
+    private val userIdKey = longPreferencesKey("user_id")
+
+    fun observeUserId(): Flow<Long?> =
+        dataStore.data.map { prefs -> prefs[userIdKey] }
+
+    suspend fun saveUserId(userId: Long) {
+        dataStore.edit { prefs -> prefs[userIdKey] = userId }
+    }
+
+    suspend fun clear() {
+        dataStore.edit { prefs -> prefs.remove(userIdKey) }
+    }
+}

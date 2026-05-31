@@ -41,6 +41,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.datastore.preferences)
     coreLibraryDesugaring(libs.desugar.jdk.libs)
     implementation(libs.jbcrypt)
     implementation(libs.kotlinx.coroutines.android)
