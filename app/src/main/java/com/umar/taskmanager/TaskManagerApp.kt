@@ -4,6 +4,7 @@ import android.app.Application
 import com.umar.taskmanager.di.dataModule
 import com.umar.taskmanager.di.databaseModule
 import com.umar.taskmanager.di.useCaseModule
+import com.umar.taskmanager.di.viewModelModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -14,7 +15,7 @@ class TaskManagerApp : Application() {
         startKoin {
             androidLogger()
             androidContext(this@TaskManagerApp)
-            modules(databaseModule,dataModule,useCaseModule)
+            modules(databaseModule,dataModule,useCaseModule, viewModelModule)
         }
     }
 }
