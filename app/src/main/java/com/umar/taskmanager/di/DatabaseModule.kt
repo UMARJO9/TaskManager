@@ -1,4 +1,4 @@
-package com.umar.taskmanager.data.di
+package com.umar.taskmanager.di
 
 import androidx.room.Room
 import com.umar.taskmanager.data.local.AppDatabase
