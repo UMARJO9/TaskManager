@@ -2,7 +2,6 @@ package com.umar.taskmanager.presentation.viewmodel.auth
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.umar.taskmanager.domain.usecase.auth.LoginUseCase
 import com.umar.taskmanager.domain.usecase.auth.RegisterUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,17 +27,16 @@ class AuthViewModel(
     }
 
     fun login() {
+        val current = _state.value
         viewModelScope.launch {
             _state.update { it.copy(isLoading = true, error = null) }
-            val current = _state.value
-            val result = loginUseCase(current.login, current.password)
-            result.onSuccess {
+            runCatching {
+                loginUseCase(current.login, current.password).getOrThrow()
+            }.onSuccess {
                 _state.update { it.copy(isLoading = false, isLoggedIn = true) }
+            }.onFailure { e ->
+                _state.update { it.copy(isLoading = false, error = e.message) }
             }
-                .onFailure { e ->
-                    _state.update { it.copy(isLoading = false, error = e.message) }
-                }
-
         }
     }
 
@@ -50,8 +48,9 @@ class AuthViewModel(
         }
         viewModelScope.launch {
             _state.update { it.copy(isLoading = true, error = null) }
-            val result = registerUseCase(current.login, current.password)
-            result.onSuccess {
+            runCatching {
+                registerUseCase(current.login, current.password).getOrThrow()
+            }.onSuccess {
                 _state.update { it.copy(isLoading = false, isLoggedIn = true) }
             }.onFailure { e ->
                 _state.update { it.copy(isLoading = false, error = e.message) }
