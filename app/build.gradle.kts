@@ -1,15 +1,13 @@
 plugins {
     alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ksp)
 }
+
 android {
     namespace = "com.umar.taskmanager"
-    compileSdk {
-        version = release(36) {
-            minorApiLevel = 1
-        }
-    }
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.umar.taskmanager"
@@ -35,6 +33,9 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+    kotlinOptions {
+        jvmTarget = "11"
+    }
     buildFeatures {
         compose = true
     }
@@ -43,6 +44,7 @@ android {
 dependencies {
     implementation(libs.androidx.datastore.preferences)
     coreLibraryDesugaring(libs.desugar.jdk.libs)
+    ksp(libs.androidx.room.compiler)
     implementation(libs.jbcrypt)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.koin.android)
