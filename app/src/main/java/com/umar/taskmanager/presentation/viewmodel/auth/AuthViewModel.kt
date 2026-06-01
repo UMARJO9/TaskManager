@@ -19,41 +19,37 @@ class AuthViewModel(
     val state: StateFlow<AuthUiState> = _state.asStateFlow()
 
     fun onLoginChange(value: String) {
-        _state.update { it.copy(login = value, error = null) }
+        _state.update { it.copy(login = value, errorRes = null) }
     }
 
     fun onPasswordChange(value: String) {
-        _state.update { it.copy(password = value, error = null) }
+        _state.update { it.copy(password = value, errorRes = null) }
     }
 
     fun login() {
         val current = _state.value
         viewModelScope.launch {
-            _state.update { it.copy(isLoading = true, error = null) }
+            _state.update { it.copy(isLoading = true, errorRes = null) }
             runCatching {
-                loginUseCase(current.login, current.password).getOrThrow()
+                loginUseCase(current.login, current.password)
             }.onSuccess {
                 _state.update { it.copy(isLoading = false, isLoggedIn = true) }
             }.onFailure { e ->
-                _state.update { it.copy(isLoading = false, error = e.message) }
+                _state.update { it.copy(isLoading = false, errorRes = e.toAuthErrorRes()) }
             }
         }
     }
 
     fun register() {
         val current = _state.value
-        if (current.login.isBlank() || current.password.isBlank()) {
-            _state.update { it.copy(error = "Заполните логин и пароль") }
-            return
-        }
         viewModelScope.launch {
-            _state.update { it.copy(isLoading = true, error = null) }
+            _state.update { it.copy(isLoading = true, errorRes = null) }
             runCatching {
-                registerUseCase(current.login, current.password).getOrThrow()
+                registerUseCase(current.login, current.password)
             }.onSuccess {
                 _state.update { it.copy(isLoading = false, isLoggedIn = true) }
             }.onFailure { e ->
-                _state.update { it.copy(isLoading = false, error = e.message) }
+                _state.update { it.copy(isLoading = false, errorRes = e.toAuthErrorRes()) }
             }
         }
     }

@@ -2,6 +2,7 @@ package com.umar.taskmanager.presentation.viewmodel.task
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.umar.taskmanager.R
 import com.umar.taskmanager.domain.model.Task
 import com.umar.taskmanager.domain.model.TaskStatus
 import com.umar.taskmanager.domain.usecase.auth.ObserveCurrentUserIdUseCase
@@ -54,11 +55,11 @@ class AddTaskViewModel(
     }
 
     fun onTitleChange(value: String) {
-        _state.update { it.copy(title = value, error = null) }
+        _state.update { it.copy(title = value, errorRes = null) }
     }
 
     fun onDescriptionChange(value: String) {
-        _state.update { it.copy(description = value, error = null) }
+        _state.update { it.copy(description = value, errorRes = null) }
     }
 
     fun onDeadlineChange(value: LocalDateTime?) {
@@ -76,7 +77,7 @@ class AddTaskViewModel(
                 description = "",
                 deadline = null,
                 status = TaskStatus.NEW,
-                error = null
+                errorRes = null
             )
         }
     }
@@ -84,12 +85,12 @@ class AddTaskViewModel(
     fun save() {
         val current = _state.value
         if (current.title.isBlank()) {
-            _state.update { it.copy(error = "Введите название задачи") }
+            _state.update { it.copy(errorRes = R.string.error_task_title_required) }
             return
         }
         val userId = currentUserId
         if (userId == null) {
-            _state.update { it.copy(error = "Сессия не найдена") }
+            _state.update { it.copy(errorRes = R.string.error_session_missing) }
             return
         }
 
@@ -103,13 +104,13 @@ class AddTaskViewModel(
         )
 
         viewModelScope.launch {
-            _state.update { it.copy(isSaving = true, error = null) }
+            _state.update { it.copy(isSaving = true, errorRes = null) }
             runCatching {
                 if (isEditMode) updateTaskUseCase(task) else addTaskUseCase(task)
             }.onSuccess {
                 _state.update { it.copy(isSaving = false, isSaved = true) }
-            }.onFailure { e ->
-                _state.update { it.copy(isSaving = false, error = e.message ?: "Ошибка сохранения") }
+            }.onFailure {
+                _state.update { it.copy(isSaving = false, errorRes = R.string.error_save_task) }
             }
         }
     }

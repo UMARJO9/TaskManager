@@ -6,23 +6,24 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import com.umar.taskmanager.domain.repository.SessionRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "session")
 class SessionManager(
     private val dataStore: DataStore<Preferences>
-) {
+) : SessionRepository {
     private val userIdKey = longPreferencesKey("user_id")
 
-    fun observeUserId(): Flow<Long?> =
+    override fun observeUserId(): Flow<Long?> =
         dataStore.data.map { prefs -> prefs[userIdKey] }
 
-    suspend fun saveUserId(userId: Long) {
+    override suspend fun saveUserId(userId: Long) {
         dataStore.edit { prefs -> prefs[userIdKey] = userId }
     }
 
-    suspend fun clear() {
+    override suspend fun clear() {
         dataStore.edit { prefs -> prefs.remove(userIdKey) }
     }
 }

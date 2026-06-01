@@ -1,9 +1,9 @@
 package com.umar.taskmanager.domain.usecase.auth
 
-import com.umar.taskmanager.data.session.SessionManager
+import com.umar.taskmanager.domain.repository.SessionRepository
 
 class LogoutUseCase(
-    private val sessionManager: SessionManager
+    private val sessionRepository: SessionRepository
 ) {
-    suspend operator fun invoke() = sessionManager.clear()
+    suspend operator fun invoke() = sessionRepository.clear()
 }
