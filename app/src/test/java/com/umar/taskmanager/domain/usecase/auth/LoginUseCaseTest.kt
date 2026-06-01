@@ -1,0 +1,53 @@
+package com.umar.taskmanager.domain.usecase.auth
+
+import com.umar.taskmanager.data.session.SessionManager
+import com.umar.taskmanager.domain.model.User
+import com.umar.taskmanager.domain.repository.AuthRepository
+import io.mockk.Runs
+import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.just
+import io.mockk.mockk
+import kotlinx.coroutines.test.runTest
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
+import org.junit.Before
+import org.junit.Test
+
+class LoginUseCaseTest {
+
+    private lateinit var repository: AuthRepository
+    private lateinit var sessionManager: SessionManager
+    private lateinit var useCase: LoginUseCase
+
+    @Before
+    fun setUp() {
+        repository = mockk()
+        sessionManager = mockk()
+        useCase = LoginUseCase(repository, sessionManager)
+    }
+
+    @Test
+    fun `successful login saves user id to session and returns user`() = runTest {
+        val user = User(id = 42, login = "umar")
+        coEvery { repository.login("umar", "pass") } returns Result.success(user)
+        coEvery { sessionManager.saveUserId(42) } just Runs
+
+        val result = useCase("umar", "pass")
+
+        assertEquals(user, result.getOrNull())
+        coVerify(exactly = 1) { sessionManager.saveUserId(42) }
+    }
+
+    @Test
+    fun `failed login does not touch session and propagates error`() = runTest {
+        val error = IllegalStateException("неверные учётные данные")
+        coEvery { repository.login("umar", "bad") } returns Result.failure(error)
+
+        val result = useCase("umar", "bad")
+
+        assertTrue(result.isFailure)
+        assertEquals(error, result.exceptionOrNull())
+        coVerify(exactly = 0) { sessionManager.saveUserId(any()) }
+    }
+}
