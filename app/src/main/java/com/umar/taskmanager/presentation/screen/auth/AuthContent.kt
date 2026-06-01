@@ -61,9 +61,9 @@ fun AuthContent(
                 visualTransformation = PasswordVisualTransformation()
             )
 
-            state.error?.let {
+            state.errorRes?.let {
                 Text(
-                    text = it,
+                    text = stringResource(it),
                     color = MaterialTheme.colorScheme.error
                 )
             }

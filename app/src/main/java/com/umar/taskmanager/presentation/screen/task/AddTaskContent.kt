@@ -112,8 +112,8 @@ fun AddTaskContent(
                 Text(state.deadline?.format(taskDateFormatter) ?: stringResource(R.string.task_pick_date))
             }
 
-            state.error?.let {
-                Text(text = it, color = MaterialTheme.colorScheme.error)
+            state.errorRes?.let {
+                Text(text = stringResource(it), color = MaterialTheme.colorScheme.error)
             }
 
             Button(

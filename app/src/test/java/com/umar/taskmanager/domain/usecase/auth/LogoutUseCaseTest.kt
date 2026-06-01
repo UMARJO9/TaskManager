@@ -1,6 +1,6 @@
 package com.umar.taskmanager.domain.usecase.auth
 
-import com.umar.taskmanager.data.session.SessionManager
+import com.umar.taskmanager.domain.repository.SessionRepository
 import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -12,21 +12,21 @@ import org.junit.Test
 
 class LogoutUseCaseTest {
 
-    private lateinit var sessionManager: SessionManager
+    private lateinit var sessionRepository: SessionRepository
     private lateinit var useCase: LogoutUseCase
 
     @Before
     fun setUp() {
-        sessionManager = mockk()
-        useCase = LogoutUseCase(sessionManager)
+        sessionRepository = mockk()
+        useCase = LogoutUseCase(sessionRepository)
     }
 
     @Test
     fun `invoke clears the session`() = runTest {
-        coEvery { sessionManager.clear() } just Runs
+        coEvery { sessionRepository.clear() } just Runs
 
         useCase()
 
-        coVerify(exactly = 1) { sessionManager.clear() }
+        coVerify(exactly = 1) { sessionRepository.clear() }
     }
 }

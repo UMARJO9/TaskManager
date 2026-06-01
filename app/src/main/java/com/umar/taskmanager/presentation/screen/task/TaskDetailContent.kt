@@ -128,9 +128,9 @@ fun TaskDetailContent(
                         }
                     }
 
-                    state.error?.let { error ->
+                    state.errorRes?.let { error ->
                         item {
-                            Text(text = error, color = MaterialTheme.colorScheme.error)
+                            Text(text = stringResource(error), color = MaterialTheme.colorScheme.error)
                         }
                     }
                 }

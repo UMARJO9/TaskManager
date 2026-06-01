@@ -1,18 +1,23 @@
 package com.umar.taskmanager.domain.usecase.auth
 
-import com.umar.taskmanager.data.session.SessionManager
+import com.umar.taskmanager.domain.model.AuthError
 import com.umar.taskmanager.domain.model.User
 import com.umar.taskmanager.domain.repository.AuthRepository
+import com.umar.taskmanager.domain.repository.SessionRepository
 
 class RegisterUseCase(
     private val repository: AuthRepository,
-    private val sessionManager: SessionManager
+    private val sessionRepository: SessionRepository
 ) {
-    suspend operator fun invoke(login: String, password: String): Result<User> {
-        val result = repository.register(login, password)
-        result.getOrNull()?.let { user ->
-            sessionManager.saveUserId(user.id)
-        }
-        return result
+    suspend operator fun invoke(login: String, password: String): User {
+        if (login.isBlank() || password.isBlank()) throw AuthError.EmptyCredentials
+        if (password.length < MIN_PASSWORD_LENGTH) throw AuthError.PasswordTooShort
+        val user = repository.register(login.trim(), password)
+        sessionRepository.saveUserId(user.id)
+        return user
+    }
+
+    companion object {
+        const val MIN_PASSWORD_LENGTH = 6
     }
 }

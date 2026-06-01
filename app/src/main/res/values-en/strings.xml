@@ -40,4 +40,16 @@
     <string name="status_new">New</string>
     <string name="status_in_progress">In progress</string>
     <string name="status_done">Done</string>
+    <string name="error_generic">Something went wrong</string>
+    <string name="error_empty_credentials">Enter login and password</string>
+    <string name="error_password_too_short">Password must be at least 6 characters</string>
+    <string name="error_login_taken">Login is already taken</string>
+    <string name="error_user_not_found">User not found</string>
+    <string name="error_wrong_password">Wrong password</string>
+    <string name="error_task_title_required">Enter a task title</string>
+    <string name="error_session_missing">Session not found</string>
+    <string name="error_save_task">Failed to save the task</string>
+    <string name="error_status_update">Failed to update status</string>
+    <string name="error_comment_empty">Comment must not be empty</string>
+    <string name="error_comment_send">Failed to send the comment</string>
 </resources>

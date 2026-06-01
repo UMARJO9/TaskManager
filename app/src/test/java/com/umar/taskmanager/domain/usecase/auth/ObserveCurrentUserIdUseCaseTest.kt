@@ -1,6 +1,6 @@
 package com.umar.taskmanager.domain.usecase.auth
 
-import com.umar.taskmanager.data.session.SessionManager
+import com.umar.taskmanager.domain.repository.SessionRepository
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
@@ -12,18 +12,18 @@ import org.junit.Test
 
 class ObserveCurrentUserIdUseCaseTest {
 
-    private lateinit var sessionManager: SessionManager
+    private lateinit var sessionRepository: SessionRepository
     private lateinit var useCase: ObserveCurrentUserIdUseCase
 
     @Before
     fun setUp() {
-        sessionManager = mockk()
-        useCase = ObserveCurrentUserIdUseCase(sessionManager)
+        sessionRepository = mockk()
+        useCase = ObserveCurrentUserIdUseCase(sessionRepository)
     }
 
     @Test
     fun `invoke emits the user ids from the session`() = runTest {
-        every { sessionManager.observeUserId() } returns flowOf(null, 5L)
+        every { sessionRepository.observeUserId() } returns flowOf(null, 5L)
 
         val emissions = useCase().toList()
 

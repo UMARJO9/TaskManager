@@ -2,6 +2,7 @@ package com.umar.taskmanager.presentation.viewmodel.task
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.umar.taskmanager.R
 import com.umar.taskmanager.domain.model.Comment
 import com.umar.taskmanager.domain.model.TaskStatus
 import com.umar.taskmanager.domain.usecase.comment.AddCommentUseCase
@@ -51,27 +52,27 @@ class TaskDetailViewModel(
         _state.update { it.copy(task = updated) }
         viewModelScope.launch {
             runCatching { updateTaskUseCase(updated) }
-                .onFailure { e ->
+                .onFailure {
                     _state.update {
-                        it.copy(task = task, error = e.message ?: "Не удалось обновить статус")
+                        it.copy(task = task, errorRes = R.string.error_status_update)
                     }
                 }
         }
     }
 
     fun onCommentChange(value: String) {
-        _state.update { it.copy(commentInput = value, error = null) }
+        _state.update { it.copy(commentInput = value, errorRes = null) }
     }
 
     fun addComment() {
         val text = _state.value.commentInput.trim()
         if (text.isBlank()) {
-            _state.update { it.copy(error = "Комментарий не должен быть пустым") }
+            _state.update { it.copy(errorRes = R.string.error_comment_empty) }
             return
         }
 
         viewModelScope.launch {
-            _state.update { it.copy(isSending = true, error = null) }
+            _state.update { it.copy(isSending = true, errorRes = null) }
             runCatching {
                 addCommentUseCase(
                     Comment(
@@ -82,9 +83,9 @@ class TaskDetailViewModel(
                 )
             }.onSuccess {
                 _state.update { it.copy(isSending = false, commentInput = "") }
-            }.onFailure { e ->
+            }.onFailure {
                 _state.update {
-                    it.copy(isSending = false, error = e.message ?: "Ошибка отправки")
+                    it.copy(isSending = false, errorRes = R.string.error_comment_send)
                 }
             }
         }

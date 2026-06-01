@@ -1,5 +1,6 @@
 package com.umar.taskmanager.presentation.viewmodel.task
 
+import androidx.annotation.StringRes
 import com.umar.taskmanager.domain.model.Comment
 import com.umar.taskmanager.domain.model.Task
 
@@ -9,5 +10,5 @@ data class TaskDetailUiState(
     val commentInput: String = "",
     val isLoading: Boolean = true,
     val isSending: Boolean = false,
-    val error: String? = null
+    @StringRes val errorRes: Int? = null
 )

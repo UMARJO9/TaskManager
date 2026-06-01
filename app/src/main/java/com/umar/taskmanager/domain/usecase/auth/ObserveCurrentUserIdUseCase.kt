@@ -1,10 +1,10 @@
 package com.umar.taskmanager.domain.usecase.auth
 
-import com.umar.taskmanager.data.session.SessionManager
+import com.umar.taskmanager.domain.repository.SessionRepository
 import kotlinx.coroutines.flow.Flow
 
 class ObserveCurrentUserIdUseCase(
-    private val sessionManager: SessionManager
+    private val sessionRepository: SessionRepository
 ) {
-    operator fun invoke(): Flow<Long?> = sessionManager.observeUserId()
+    operator fun invoke(): Flow<Long?> = sessionRepository.observeUserId()
 }
