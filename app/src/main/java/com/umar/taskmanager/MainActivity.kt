@@ -78,7 +78,7 @@ private fun AppRoot(
         }
 
         is SessionState.Resolved -> {
-            val start = if (state.userId == null) Routes.Auth.routes else Routes.Task.routes
+            val start = if (state.userId == null) Routes.Auth.route else Routes.Task.route
             AppNavHost(startDestination = start)
         }
     }

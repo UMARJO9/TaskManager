@@ -1,6 +1,6 @@
 package com.umar.taskmanager.presentation.navigation
 
-sealed class Routes(val routes: String) {
+sealed class Routes(val route: String) {
     data object Auth : Routes("auth")
     data object Task : Routes("task")
     data object AddTask : Routes("add_task")

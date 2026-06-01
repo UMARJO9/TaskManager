@@ -23,29 +23,29 @@ fun AppNavHost(
         startDestination = startDestination
     ) {
 
-        composable(Routes.Auth.routes) {
+        composable(Routes.Auth.route) {
             AuthScreen(onLoggedIn = {
-                navController.navigate(Routes.Task.routes) {
-                    popUpTo(Routes.Auth.routes) { inclusive = true }
+                navController.navigate(Routes.Task.route) {
+                    popUpTo(Routes.Auth.route) { inclusive = true }
                 }
             })
         }
 
-        composable(Routes.Task.routes) {
+        composable(Routes.Task.route) {
             TasksScreen(
-                onAddTask = { navController.navigate(Routes.AddTask.routes) },
+                onAddTask = { navController.navigate(Routes.AddTask.route) },
                 onOpenTask = { task ->
                     navController.navigate(Routes.TaskDetail.createRoute(task.id))
                 },
                 onLoggedOut = {
-                    navController.navigate(Routes.Auth.routes) {
-                        popUpTo(Routes.Task.routes) { inclusive = true }
+                    navController.navigate(Routes.Auth.route) {
+                        popUpTo(Routes.Task.route) { inclusive = true }
                     }
                 }
             )
         }
 
-        composable(Routes.AddTask.routes) {
+        composable(Routes.AddTask.route) {
             AddTaskScreen(
                 onSaved = { navController.popBackStack() },
                 onBack = { navController.popBackStack() }
@@ -53,7 +53,7 @@ fun AppNavHost(
         }
 
         composable(
-            route = Routes.EditTask.routes,
+            route = Routes.EditTask.route,
             arguments = listOf(
                 navArgument(Routes.EditTask.ARG_TASK_ID) { type = NavType.LongType }
             )
@@ -67,7 +67,7 @@ fun AppNavHost(
         }
 
         composable(
-            route = Routes.TaskDetail.routes,
+            route = Routes.TaskDetail.route,
             arguments = listOf(
                 navArgument(Routes.TaskDetail.ARG_TASK_ID) { type = NavType.LongType }
             )
