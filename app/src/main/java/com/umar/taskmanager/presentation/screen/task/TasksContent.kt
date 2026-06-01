@@ -29,8 +29,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.umar.taskmanager.R
 import com.umar.taskmanager.domain.model.Task
 import com.umar.taskmanager.domain.model.TaskStatus
 import com.umar.taskmanager.presentation.screen.task.components.TaskItem
@@ -53,12 +55,12 @@ fun TasksContent(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Мои задачи") },
+                title = { Text(stringResource(R.string.tasks_title)) },
                 actions = {
                     IconButton(onClick = onLogout) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ExitToApp,
-                            contentDescription = "Выйти"
+                            contentDescription = stringResource(R.string.action_logout)
                         )
                     }
                 }
@@ -66,7 +68,7 @@ fun TasksContent(
         },
         floatingActionButton = {
             FloatingActionButton(onClick = onAddTask) {
-                Icon(Icons.Default.Add, contentDescription = "Добавить задачу")
+                Icon(Icons.Default.Add, contentDescription = stringResource(R.string.tasks_add))
             }
         }
     ) { innerPadding ->
@@ -91,7 +93,7 @@ fun TasksContent(
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = "Задач пока нет.\nНажмите + чтобы добавить.",
+                            text = stringResource(R.string.tasks_empty),
                             style = MaterialTheme.typography.bodyLarge,
                             textAlign = TextAlign.Center
                         )
@@ -112,7 +114,7 @@ fun TasksContent(
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
-                                text = "Ничего не найдено",
+                                text = stringResource(R.string.tasks_nothing_found),
                                 style = MaterialTheme.typography.bodyLarge,
                                 textAlign = TextAlign.Center
                             )
@@ -140,8 +142,8 @@ fun TasksContent(
     taskPendingDelete?.let { task ->
         AlertDialog(
             onDismissRequest = { taskPendingDelete = null },
-            title = { Text("Удалить задачу?") },
-            text = { Text("Задача «${task.title}» будет удалена без возможности восстановления.") },
+            title = { Text(stringResource(R.string.task_delete_title)) },
+            text = { Text(stringResource(R.string.task_delete_message, task.title)) },
             confirmButton = {
                 TextButton(
                     onClick = {
@@ -149,12 +151,12 @@ fun TasksContent(
                         taskPendingDelete = null
                     }
                 ) {
-                    Text("Удалить")
+                    Text(stringResource(R.string.action_delete))
                 }
             },
             dismissButton = {
                 TextButton(onClick = { taskPendingDelete = null }) {
-                    Text("Отмена")
+                    Text(stringResource(R.string.action_cancel))
                 }
             }
         )

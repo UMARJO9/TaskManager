@@ -1,0 +1,43 @@
+<resources>
+    <string name="app_name">TaskManager</string>
+
+    <string name="action_save">Save</string>
+    <string name="action_update">Update</string>
+    <string name="action_clear">Clear</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_ok">OK</string>
+    <string name="action_back">Back</string>
+    <string name="action_edit">Edit</string>
+    <string name="action_logout">Log out</string>
+    <string name="action_send">Send</string>
+    <string name="auth_title">Sign in</string>
+    <string name="auth_login">Login</string>
+    <string name="auth_password">Password</string>
+    <string name="auth_sign_in">Sign in</string>
+    <string name="auth_register">Register</string>
+    <string name="tasks_title">My tasks</string>
+    <string name="tasks_add">Add task</string>
+    <string name="tasks_empty">No tasks yet.\nTap + to add one.</string>
+    <string name="tasks_nothing_found">Nothing found</string>
+    <string name="tasks_search_placeholder">Search tasks…</string>
+    <string name="filter_all">All</string>
+    <string name="task_delete_title">Delete task?</string>
+    <string name="task_delete_message">Task “%1$s” will be deleted permanently.</string>
+    <string name="add_task_new_title">New task</string>
+    <string name="add_task_edit_title">Edit</string>
+    <string name="task_title_label">Title</string>
+    <string name="task_description_label">Description</string>
+    <string name="task_deadline_label">Deadline</string>
+    <string name="task_pick_date">Pick a date</string>
+    <string name="task_status_label">Status</string>
+    <string name="task_detail_title">Task</string>
+    <string name="task_not_found">Task not found</string>
+    <string name="task_deadline_prefix">due %1$s</string>
+    <string name="comments_title">Comments (%1$d)</string>
+    <string name="comments_empty">No comments yet</string>
+    <string name="comment_placeholder">Comment…</string>
+    <string name="status_new">New</string>
+    <string name="status_in_progress">In progress</string>
+    <string name="status_done">Done</string>
+</resources>

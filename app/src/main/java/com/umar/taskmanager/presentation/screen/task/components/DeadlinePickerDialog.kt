@@ -9,6 +9,8 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.res.stringResource
+import com.umar.taskmanager.R
 import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -44,12 +46,12 @@ fun DeadlinePickerDialog(
                 }
                 onDismiss()
             }) {
-                Text("OK")
+                Text(stringResource(R.string.action_ok))
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("Отмена")
+                Text(stringResource(R.string.action_cancel))
             }
         }
     ) {

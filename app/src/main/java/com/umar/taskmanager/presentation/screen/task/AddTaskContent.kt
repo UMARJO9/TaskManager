@@ -26,7 +26,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.umar.taskmanager.R
 import com.umar.taskmanager.domain.model.TaskStatus
 import com.umar.taskmanager.presentation.screen.task.components.DeadlinePickerDialog
 import com.umar.taskmanager.presentation.screen.task.components.TaskStatusSelector
@@ -51,12 +53,19 @@ fun AddTaskContent(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(if (state.isEditMode) "Редактирование" else "Новая задача") },
+                title = {
+                    Text(
+                        stringResource(
+                            if (state.isEditMode) R.string.add_task_edit_title
+                            else R.string.add_task_new_title
+                        )
+                    )
+                },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Назад"
+                            contentDescription = stringResource(R.string.action_back)
                         )
                     }
                 }
@@ -74,7 +83,7 @@ fun AddTaskContent(
             OutlinedTextField(
                 value = state.title,
                 onValueChange = onTitleChange,
-                label = { Text("Название") },
+                label = { Text(stringResource(R.string.task_title_label)) },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth(),
                 enabled = !state.isSaving
@@ -83,7 +92,7 @@ fun AddTaskContent(
             OutlinedTextField(
                 value = state.description,
                 onValueChange = onDescriptionChange,
-                label = { Text("Описание") },
+                label = { Text(stringResource(R.string.task_description_label)) },
                 modifier = Modifier.fillMaxWidth(),
                 minLines = 3,
                 enabled = !state.isSaving
@@ -95,12 +104,12 @@ fun AddTaskContent(
                 enabled = !state.isSaving
             )
 
-            Text("Дедлайн", style = MaterialTheme.typography.labelLarge)
+            Text(stringResource(R.string.task_deadline_label), style = MaterialTheme.typography.labelLarge)
             OutlinedButton(
                 onClick = { showDatePicker = true },
                 enabled = !state.isSaving
             ) {
-                Text(state.deadline?.format(taskDateFormatter) ?: "Выбрать дату")
+                Text(state.deadline?.format(taskDateFormatter) ?: stringResource(R.string.task_pick_date))
             }
 
             state.error?.let {
@@ -115,7 +124,12 @@ fun AddTaskContent(
                 if (state.isSaving) {
                     CircularProgressIndicator(modifier = Modifier.padding(end = 8.dp))
                 }
-                Text(if (state.isEditMode) "Обновить" else "Сохранить")
+                Text(
+                    stringResource(
+                        if (state.isEditMode) R.string.action_update
+                        else R.string.action_save
+                    )
+                )
             }
 
             val hasInput = state.title.isNotEmpty() ||
@@ -128,7 +142,7 @@ fun AddTaskContent(
                     modifier = Modifier.fillMaxWidth(),
                     enabled = !state.isSaving
                 ) {
-                    Text("Очистить")
+                    Text(stringResource(R.string.action_clear))
                 }
             }
         }

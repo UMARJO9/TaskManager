@@ -6,7 +6,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.umar.taskmanager.R
 import com.umar.taskmanager.domain.model.Task
 import com.umar.taskmanager.domain.model.TaskStatus
 
@@ -25,7 +27,7 @@ fun TaskHeader(
 
         task.deadline?.let {
             Text(
-                text = "до ${it.format(taskDateTimeFormatter)}",
+                text = stringResource(R.string.task_deadline_prefix, it.format(taskDateTimeFormatter)),
                 style = MaterialTheme.typography.labelMedium
             )
         }

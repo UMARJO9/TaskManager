@@ -16,7 +16,9 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.umar.taskmanager.R
 import com.umar.taskmanager.domain.model.TaskStatus
 
 @Composable
@@ -38,12 +40,12 @@ fun TasksFilterBar(
             onValueChange = onSearchChange,
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,
-            placeholder = { Text("Поиск по задачам…") },
+            placeholder = { Text(stringResource(R.string.tasks_search_placeholder)) },
             leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
             trailingIcon = {
                 if (searchQuery.isNotEmpty()) {
                     IconButton(onClick = { onSearchChange("") }) {
-                        Icon(Icons.Default.Clear, contentDescription = "Очистить")
+                        Icon(Icons.Default.Clear, contentDescription = stringResource(R.string.action_clear))
                     }
                 }
             }
@@ -54,7 +56,7 @@ fun TasksFilterBar(
                 FilterChip(
                     selected = statusFilter == null,
                     onClick = { onStatusFilterChange(null) },
-                    label = { Text("Все") }
+                    label = { Text(stringResource(R.string.filter_all)) }
                 )
             }
             items(TaskStatus.entries) { status ->
