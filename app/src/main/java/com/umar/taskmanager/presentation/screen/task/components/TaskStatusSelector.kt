@@ -8,7 +8,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.umar.taskmanager.R
 import com.umar.taskmanager.domain.model.TaskStatus
 
 @Composable
@@ -19,7 +21,7 @@ fun TaskStatusSelector(
     enabled: Boolean = true
 ) {
     Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        Text("Статус", style = MaterialTheme.typography.labelLarge)
+        Text(stringResource(R.string.task_status_label), style = MaterialTheme.typography.labelLarge)
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             TaskStatus.entries.forEach { status ->
                 FilterChip(

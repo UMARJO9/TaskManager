@@ -22,7 +22,9 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.umar.taskmanager.R
 import com.umar.taskmanager.domain.model.TaskStatus
 import com.umar.taskmanager.presentation.screen.task.components.CommentInputBar
 import com.umar.taskmanager.presentation.screen.task.components.CommentItem
@@ -42,12 +44,12 @@ fun TaskDetailContent(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Задача") },
+                title = { Text(stringResource(R.string.task_detail_title)) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Назад"
+                            contentDescription = stringResource(R.string.action_back)
                         )
                     }
                 },
@@ -56,7 +58,7 @@ fun TaskDetailContent(
                         IconButton(onClick = onEdit) {
                             Icon(
                                 imageVector = Icons.Default.Edit,
-                                contentDescription = "Редактировать"
+                                contentDescription = stringResource(R.string.action_edit)
                             )
                         }
                     }
@@ -91,7 +93,7 @@ fun TaskDetailContent(
                         .padding(innerPadding),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = "Задача не найдена")
+                    Text(text = stringResource(R.string.task_not_found))
                 }
             }
 
@@ -107,7 +109,7 @@ fun TaskDetailContent(
 
                     item {
                         Text(
-                            text = "Комментарии (${state.comments.size})",
+                            text = stringResource(R.string.comments_title, state.comments.size),
                             style = MaterialTheme.typography.titleMedium
                         )
                         HorizontalDivider(modifier = Modifier.padding(top = 8.dp))
@@ -116,7 +118,7 @@ fun TaskDetailContent(
                     if (state.comments.isEmpty()) {
                         item {
                             Text(
-                                text = "Комментариев пока нет",
+                                text = stringResource(R.string.comments_empty),
                                 style = MaterialTheme.typography.bodyMedium
                             )
                         }

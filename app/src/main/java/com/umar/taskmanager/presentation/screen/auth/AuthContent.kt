@@ -15,8 +15,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import com.umar.taskmanager.R
 import com.umar.taskmanager.presentation.viewmodel.auth.AuthUiState
 
 @Composable
@@ -38,14 +40,14 @@ fun AuthContent(
         ) {
 
             Text(
-                text = "Авторизация",
+                text = stringResource(R.string.auth_title),
                 style = MaterialTheme.typography.headlineMedium
             )
 
             OutlinedTextField(
                 value = state.login,
                 onValueChange = onLoginChange,
-                label = { Text("Логин") },
+                label = { Text(stringResource(R.string.auth_login)) },
                 modifier = Modifier.fillMaxWidth(),
                 enabled = !state.isLoading
             )
@@ -53,7 +55,7 @@ fun AuthContent(
             OutlinedTextField(
                 value = state.password,
                 onValueChange = onPasswordChange,
-                label = { Text("Пароль") },
+                label = { Text(stringResource(R.string.auth_password)) },
                 modifier = Modifier.fillMaxWidth(),
                 enabled = !state.isLoading,
                 visualTransformation = PasswordVisualTransformation()
@@ -71,7 +73,7 @@ fun AuthContent(
                 modifier = Modifier.fillMaxWidth(),
                 enabled = !state.isLoading
             ) {
-                Text("Войти")
+                Text(stringResource(R.string.auth_sign_in))
             }
 
             OutlinedButton(
@@ -79,7 +81,7 @@ fun AuthContent(
                 modifier = Modifier.fillMaxWidth(),
                 enabled = !state.isLoading
             ) {
-                Text("Регистрация")
+                Text(stringResource(R.string.auth_register))
             }
         }
 

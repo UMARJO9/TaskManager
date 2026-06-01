@@ -1,3 +1,43 @@
 <resources>
     <string name="app_name">TaskManager</string>
+
+    <string name="action_save">Сохранить</string>
+    <string name="action_update">Обновить</string>
+    <string name="action_clear">Очистить</string>
+    <string name="action_delete">Удалить</string>
+    <string name="action_cancel">Отмена</string>
+    <string name="action_ok">OK</string>
+    <string name="action_back">Назад</string>
+    <string name="action_edit">Редактировать</string>
+    <string name="action_logout">Выйти</string>
+    <string name="action_send">Отправить</string>
+    <string name="auth_title">Авторизация</string>
+    <string name="auth_login">Логин</string>
+    <string name="auth_password">Пароль</string>
+    <string name="auth_sign_in">Войти</string>
+    <string name="auth_register">Регистрация</string>
+    <string name="tasks_title">Мои задачи</string>
+    <string name="tasks_add">Добавить задачу</string>
+    <string name="tasks_empty">Задач пока нет.\nНажмите + чтобы добавить.</string>
+    <string name="tasks_nothing_found">Ничего не найдено</string>
+    <string name="tasks_search_placeholder">Поиск по задачам…</string>
+    <string name="filter_all">Все</string>
+    <string name="task_delete_title">Удалить задачу?</string>
+    <string name="task_delete_message">Задача «%1$s» будет удалена без возможности восстановления.</string>
+    <string name="add_task_new_title">Новая задача</string>
+    <string name="add_task_edit_title">Редактирование</string>
+    <string name="task_title_label">Название</string>
+    <string name="task_description_label">Описание</string>
+    <string name="task_deadline_label">Дедлайн</string>
+    <string name="task_pick_date">Выбрать дату</string>
+    <string name="task_status_label">Статус</string>
+    <string name="task_detail_title">Задача</string>
+    <string name="task_not_found">Задача не найдена</string>
+    <string name="task_deadline_prefix">до %1$s</string>
+    <string name="comments_title">Комментарии (%1$d)</string>
+    <string name="comments_empty">Комментариев пока нет</string>
+    <string name="comment_placeholder">Комментарий…</string>
+    <string name="status_new">Новая</string>
+    <string name="status_in_progress">В работе</string>
+    <string name="status_done">Готово</string>
 </resources>
