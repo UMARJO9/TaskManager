@@ -2,6 +2,7 @@ package com.umar.taskmanager.presentation.screen.task
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -28,9 +29,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.umar.taskmanager.domain.model.Task
+import com.umar.taskmanager.domain.model.TaskStatus
 import com.umar.taskmanager.presentation.screen.task.components.TaskItem
+import com.umar.taskmanager.presentation.screen.task.components.TasksFilterBar
 import com.umar.taskmanager.presentation.viewmodel.task.TasksUiState
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -40,6 +44,8 @@ fun TasksContent(
     onAddTask: () -> Unit,
     onOpenTask: (Task) -> Unit,
     onDeleteTask: (Task) -> Unit,
+    onSearchChange: (String) -> Unit,
+    onStatusFilterChange: (TaskStatus?) -> Unit,
     onLogout: () -> Unit
 ) {
     var taskPendingDelete by remember { mutableStateOf<Task?>(null) }
@@ -64,36 +70,66 @@ fun TasksContent(
             }
         }
     ) { innerPadding ->
-        Box(
+        Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
             when {
                 state.isLoading -> {
-                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator()
+                    }
                 }
 
-                state.tasks.isEmpty() -> {
-                    Text(
-                        text = "Задач пока нет.\nНажмите + чтобы добавить.",
-                        style = MaterialTheme.typography.bodyLarge,
-                        modifier = Modifier.align(Alignment.Center)
-                    )
+                !state.hasAnyTasks -> {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "Задач пока нет.\nНажмите + чтобы добавить.",
+                            style = MaterialTheme.typography.bodyLarge,
+                            textAlign = TextAlign.Center
+                        )
+                    }
                 }
 
                 else -> {
-                    LazyColumn(
-                        modifier = Modifier.fillMaxSize(),
-                        contentPadding = PaddingValues(16.dp),
-                        verticalArrangement = Arrangement.spacedBy(12.dp)
-                    ) {
-                        items(items = state.tasks, key = { it.id }) { task ->
-                            TaskItem(
-                                task = task,
-                                onClick = { onOpenTask(task) },
-                                onDelete = { taskPendingDelete = task }
+                    TasksFilterBar(
+                        searchQuery = state.searchQuery,
+                        statusFilter = state.statusFilter,
+                        onSearchChange = onSearchChange,
+                        onStatusFilterChange = onStatusFilterChange
+                    )
+
+                    if (state.tasks.isEmpty()) {
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = "Ничего не найдено",
+                                style = MaterialTheme.typography.bodyLarge,
+                                textAlign = TextAlign.Center
                             )
+                        }
+                    } else {
+                        LazyColumn(
+                            modifier = Modifier.fillMaxSize(),
+                            contentPadding = PaddingValues(16.dp),
+                            verticalArrangement = Arrangement.spacedBy(12.dp)
+                        ) {
+                            items(items = state.tasks, key = { it.id }) { task ->
+                                TaskItem(
+                                    task = task,
+                                    onClick = { onOpenTask(task) },
+                                    onDelete = { taskPendingDelete = task }
+                                )
+                            }
                         }
                     }
                 }

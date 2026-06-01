@@ -26,6 +26,8 @@ fun TasksScreen(
         onAddTask = onAddTask,
         onOpenTask = onOpenTask,
         onDeleteTask = viewModel::onDeleteTask,
+        onSearchChange = viewModel::onSearchChange,
+        onStatusFilterChange = viewModel::onStatusFilterChange,
         onLogout = viewModel::onLogout
     )
 }
