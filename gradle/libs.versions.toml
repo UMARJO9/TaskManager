@@ -16,6 +16,7 @@ composeBom = "2024.12.01"
 ksp = "2.0.21-1.0.28"
 navigationCompose = "2.8.0"
 roomRuntime = "2.8.4"
+workRuntime = "2.10.0"
 desugarJdkLibs = "2.1.5"
 mockk = "1.13.13"
 
@@ -47,6 +48,7 @@ mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 desugar-jdk-libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugarJdkLibs" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomRuntime" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomRuntime" }
+androidx-work-runtime-ktx = { module = "androidx.work:work-runtime-ktx", version.ref = "workRuntime" }
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
