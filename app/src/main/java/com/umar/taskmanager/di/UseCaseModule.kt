@@ -22,9 +22,9 @@ val useCaseModule = module {
 
 
     factory { GetTaskUseCase(get()) }
-    factory { AddTaskUseCase(get()) }
-    factory { UpdateTaskUseCase(get()) }
-    factory { DeleteTaskUseCase(get()) }
+    factory { AddTaskUseCase(get(), get()) }
+    factory { UpdateTaskUseCase(get(), get()) }
+    factory { DeleteTaskUseCase(get(), get()) }
     factory { ObserveUserTasksUseCase(get()) }
 
     factory { AddCommentUseCase(get()) }
