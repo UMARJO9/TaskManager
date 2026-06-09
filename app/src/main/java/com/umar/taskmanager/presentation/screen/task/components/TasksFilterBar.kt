@@ -9,10 +9,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -20,6 +17,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.umar.taskmanager.R
 import com.umar.taskmanager.domain.model.TaskStatus
+import com.umar.taskmanager.ui.components.TmChip
+import com.umar.taskmanager.ui.components.TmColors
+import com.umar.taskmanager.ui.components.TmIconButton
+import com.umar.taskmanager.ui.components.TmTextField
 
 @Composable
 fun TasksFilterBar(
@@ -35,37 +36,47 @@ fun TasksFilterBar(
             .padding(horizontal = 16.dp, vertical = 8.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        OutlinedTextField(
+        TmTextField(
             value = searchQuery,
             onValueChange = onSearchChange,
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,
-            placeholder = { Text(stringResource(R.string.tasks_search_placeholder)) },
-            leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
+            label = stringResource(R.string.tasks_search_placeholder),
+            leadingIcon = {
+                Icon(
+                    imageVector = Icons.Default.Search,
+                    contentDescription = null,
+                    tint = TmColors.InkMuted
+                )
+            },
             trailingIcon = {
                 if (searchQuery.isNotEmpty()) {
-                    IconButton(onClick = { onSearchChange("") }) {
-                        Icon(Icons.Default.Clear, contentDescription = stringResource(R.string.action_clear))
-                    }
+                    TmIconButton(
+                        imageVector = Icons.Default.Clear,
+                        contentDescription = stringResource(R.string.action_clear),
+                        onClick = { onSearchChange("") },
+                        modifier = Modifier,
+                        tint = TmColors.InkMuted
+                    )
                 }
             }
         )
 
         LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             item {
-                FilterChip(
+                TmChip(
                     selected = statusFilter == null,
                     onClick = { onStatusFilterChange(null) },
-                    label = { Text(stringResource(R.string.filter_all)) }
+                    text = stringResource(R.string.filter_all)
                 )
             }
             items(TaskStatus.entries) { status ->
-                FilterChip(
+                TmChip(
                     selected = statusFilter == status,
                     onClick = {
                         onStatusFilterChange(if (statusFilter == status) null else status)
                     },
-                    label = { Text(status.label()) }
+                    text = status.label()
                 )
             }
         }

@@ -1,5 +1,6 @@
 package com.umar.taskmanager.presentation.screen.task
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -16,6 +17,8 @@ fun AddTaskScreen(
     onBack: () -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+
+    BackHandler(onBack = onBack)
 
     LaunchedEffect(state.isSaved) {
         if (state.isSaved) onSaved()

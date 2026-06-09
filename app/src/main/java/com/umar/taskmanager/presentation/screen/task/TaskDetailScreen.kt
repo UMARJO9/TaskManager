@@ -1,5 +1,6 @@
 package com.umar.taskmanager.presentation.screen.task
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -16,6 +17,8 @@ fun TaskDetailScreen(
     onBack: () -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+
+    BackHandler(onBack = onBack)
 
     LifecycleResumeEffect(Unit) {
         viewModel.refresh()

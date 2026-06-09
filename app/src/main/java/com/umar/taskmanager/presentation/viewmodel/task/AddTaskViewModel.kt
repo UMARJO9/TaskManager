@@ -32,6 +32,7 @@ class AddTaskViewModel(
     val state: StateFlow<AddTaskUiState> = _state.asStateFlow()
 
     private var currentUserId: Long? = null
+    private var currentIsFavorite: Boolean = false
 
     init {
         observeCurrentUserIdUseCase()
@@ -49,6 +50,7 @@ class AddTaskViewModel(
                             status = task.status
                         )
                     }
+                    currentIsFavorite = task.isFavorite
                 }
             }
         }
@@ -100,7 +102,8 @@ class AddTaskViewModel(
             title = current.title.trim(),
             description = current.description.trim().ifBlank { null },
             deadline = current.deadline,
-            status = current.status
+            status = current.status,
+            isFavorite = currentIsFavorite
         )
 
         viewModelScope.launch {

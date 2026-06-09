@@ -10,15 +10,11 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,8 +26,12 @@ import com.umar.taskmanager.presentation.screen.task.components.CommentInputBar
 import com.umar.taskmanager.presentation.screen.task.components.CommentItem
 import com.umar.taskmanager.presentation.screen.task.components.TaskHeader
 import com.umar.taskmanager.presentation.viewmodel.task.TaskDetailUiState
+import com.umar.taskmanager.ui.components.TmColors
+import com.umar.taskmanager.ui.components.TmIconButton
+import com.umar.taskmanager.ui.components.TmLoading
+import com.umar.taskmanager.ui.components.TmScreen
+import com.umar.taskmanager.ui.components.TmTopBar
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TaskDetailContent(
     state: TaskDetailUiState,
@@ -42,25 +42,24 @@ fun TaskDetailContent(
     onBack: () -> Unit
 ) {
     Scaffold(
+        containerColor = TmColors.Background,
         topBar = {
-            TopAppBar(
-                title = { Text(stringResource(R.string.task_detail_title)) },
+            TmTopBar(
+                title = stringResource(R.string.task_detail_title),
                 navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.action_back)
-                        )
-                    }
+                    TmIconButton(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = stringResource(R.string.action_back),
+                        onClick = onBack
+                    )
                 },
                 actions = {
                     if (state.task != null) {
-                        IconButton(onClick = onEdit) {
-                            Icon(
-                                imageVector = Icons.Default.Edit,
-                                contentDescription = stringResource(R.string.action_edit)
-                            )
-                        }
+                        TmIconButton(
+                            imageVector = Icons.Default.Edit,
+                            contentDescription = stringResource(R.string.action_edit),
+                            onClick = onEdit
+                        )
                     }
                 }
             )
@@ -74,63 +73,64 @@ fun TaskDetailContent(
             )
         }
     ) { innerPadding ->
-        when {
-            state.isLoading -> {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(innerPadding),
-                    contentAlignment = Alignment.Center
-                ) {
-                    CircularProgressIndicator()
-                }
-            }
-
-            state.task == null -> {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(innerPadding),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(text = stringResource(R.string.task_not_found))
-                }
-            }
-
-            else -> {
-                LazyColumn(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(innerPadding),
-                    contentPadding = PaddingValues(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
-                    item { TaskHeader(task = state.task, onStatusChange = onStatusChange) }
-
-                    item {
-                        Text(
-                            text = stringResource(R.string.comments_title, state.comments.size),
-                            style = MaterialTheme.typography.titleMedium
-                        )
-                        HorizontalDivider(modifier = Modifier.padding(top = 8.dp))
+        TmScreen(modifier = Modifier.padding(innerPadding)) {
+            when {
+                state.isLoading -> {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        TmLoading()
                     }
+                }
 
-                    if (state.comments.isEmpty()) {
+                state.task == null -> {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = stringResource(R.string.task_not_found),
+                            color = TmColors.InkMuted
+                        )
+                    }
+                }
+
+                else -> {
+                    LazyColumn(
+                        modifier = Modifier.fillMaxSize(),
+                        contentPadding = PaddingValues(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        item { TaskHeader(task = state.task, onStatusChange = onStatusChange) }
+
                         item {
                             Text(
-                                text = stringResource(R.string.comments_empty),
-                                style = MaterialTheme.typography.bodyMedium
+                                text = stringResource(R.string.comments_title, state.comments.size),
+                                style = MaterialTheme.typography.titleMedium,
+                                color = TmColors.Ink
                             )
+                            HorizontalDivider(modifier = Modifier.padding(top = 8.dp))
                         }
-                    } else {
-                        items(items = state.comments, key = { it.id }) { comment ->
-                            CommentItem(comment)
-                        }
-                    }
 
-                    state.errorRes?.let { error ->
-                        item {
-                            Text(text = stringResource(error), color = MaterialTheme.colorScheme.error)
+                        if (state.comments.isEmpty()) {
+                            item {
+                                Text(
+                                    text = stringResource(R.string.comments_empty),
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = TmColors.InkMuted
+                                )
+                            }
+                        } else {
+                            items(items = state.comments, key = { it.id }) { comment ->
+                                CommentItem(comment)
+                            }
+                        }
+
+                        state.errorRes?.let { error ->
+                            item {
+                                Text(text = stringResource(error), color = MaterialTheme.colorScheme.error)
+                            }
                         }
                     }
                 }

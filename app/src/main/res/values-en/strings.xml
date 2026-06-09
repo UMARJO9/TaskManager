@@ -11,6 +11,8 @@
     <string name="action_edit">Edit</string>
     <string name="action_logout">Log out</string>
     <string name="action_send">Send</string>
+    <string name="action_add_to_favorites">Add to favorites</string>
+    <string name="action_remove_from_favorites">Remove from favorites</string>
     <string name="auth_title">Sign in</string>
     <string name="auth_login">Login</string>
     <string name="auth_password">Password</string>
@@ -22,6 +24,11 @@
     <string name="tasks_nothing_found">Nothing found</string>
     <string name="tasks_search_placeholder">Search tasks…</string>
     <string name="filter_all">All</string>
+    <string name="bottom_home">Home</string>
+    <string name="bottom_favorites">Favorites</string>
+    <string name="bottom_profile">Profile</string>
+    <string name="favorites_empty">No favorite tasks yet</string>
+    <string name="profile_title">Profile</string>
     <string name="task_delete_title">Delete task?</string>
     <string name="task_delete_message">Task “%1$s” will be deleted permanently.</string>
     <string name="add_task_new_title">New task</string>

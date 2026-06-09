@@ -11,7 +11,9 @@ val databaseModule = module {
             androidContext(),
             AppDatabase::class.java,
             "task_manager.db"
-        ).build()
+        )
+            .addMigrations(AppDatabase.MIGRATION_1_2)
+            .build()
     }
 
     single { get<AppDatabase>().userDao() }

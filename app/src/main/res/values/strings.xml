@@ -11,6 +11,8 @@
     <string name="action_edit">Редактировать</string>
     <string name="action_logout">Выйти</string>
     <string name="action_send">Отправить</string>
+    <string name="action_add_to_favorites">Добавить в избранное</string>
+    <string name="action_remove_from_favorites">Убрать из избранного</string>
     <string name="auth_title">Авторизация</string>
     <string name="auth_login">Логин</string>
     <string name="auth_password">Пароль</string>
@@ -22,6 +24,11 @@
     <string name="tasks_nothing_found">Ничего не найдено</string>
     <string name="tasks_search_placeholder">Поиск по задачам…</string>
     <string name="filter_all">Все</string>
+    <string name="bottom_home">Главный</string>
+    <string name="bottom_favorites">Избранное</string>
+    <string name="bottom_profile">Профиль</string>
+    <string name="favorites_empty">В избранном пока нет задач</string>
+    <string name="profile_title">Профиль</string>
     <string name="task_delete_title">Удалить задачу?</string>
     <string name="task_delete_message">Задача «%1$s» будет удалена без возможности восстановления.</string>
     <string name="add_task_new_title">Новая задача</string>

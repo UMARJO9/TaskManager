@@ -25,5 +25,6 @@ data class TaskEntity(
     val title: String,
     val description: String?,
     val deadline: LocalDateTime?,
-    val status: TaskStatus = TaskStatus.NEW
+    val status: TaskStatus = TaskStatus.NEW,
+    val isFavorite: Boolean = false
 )

@@ -10,7 +10,7 @@ import org.koin.dsl.module
 
 val viewModelModule = module {
     viewModel { AuthViewModel(get(), get()) }
-    viewModel { TasksViewModel(get(), get(), get(), get()) }
+    viewModel { TasksViewModel(get(), get(), get(), get(), get()) }
     viewModel { (taskId: Long) ->
         AddTaskViewModel(taskId, get(), get(), get(), get())
     }

@@ -11,18 +11,16 @@ import androidx.compose.foundation.layout.union
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Send
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.umar.taskmanager.R
+import com.umar.taskmanager.ui.components.TmColors
+import com.umar.taskmanager.ui.components.TmIconButton
+import com.umar.taskmanager.ui.components.TmLoading
+import com.umar.taskmanager.ui.components.TmTextField
 
 @Composable
 fun CommentInputBar(
@@ -36,28 +34,30 @@ fun CommentInputBar(
         modifier = modifier
             .fillMaxWidth()
             .windowInsetsPadding(WindowInsets.navigationBars.union(WindowInsets.ime))
+            .padding(horizontal = 10.dp, vertical = 8.dp)
+            .fillMaxWidth()
             .padding(horizontal = 12.dp, vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        OutlinedTextField(
+        TmTextField(
             value = value,
             onValueChange = onValueChange,
             modifier = Modifier.weight(1f),
-            placeholder = { Text(stringResource(R.string.comment_placeholder)) },
+            label = stringResource(R.string.comment_placeholder),
             enabled = !isSending,
             maxLines = 4
         )
-        IconButton(onClick = onSend, enabled = !isSending) {
-            if (isSending) {
-                CircularProgressIndicator(modifier = Modifier.padding(4.dp))
-            } else {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.Send,
-                    contentDescription = stringResource(R.string.action_send),
-                    tint = MaterialTheme.colorScheme.primary
-                )
-            }
+        if (isSending) {
+            TmLoading()
+        } else {
+            TmIconButton(
+                imageVector = Icons.AutoMirrored.Filled.Send,
+                contentDescription = stringResource(R.string.action_send),
+                onClick = onSend,
+                enabled = !isSending,
+                tint = TmColors.Primary
+            )
         }
     }
 }

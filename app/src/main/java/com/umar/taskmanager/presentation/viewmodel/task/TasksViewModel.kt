@@ -8,6 +8,7 @@ import com.umar.taskmanager.domain.usecase.auth.LogoutUseCase
 import com.umar.taskmanager.domain.usecase.auth.ObserveCurrentUserIdUseCase
 import com.umar.taskmanager.domain.usecase.task.DeleteTaskUseCase
 import com.umar.taskmanager.domain.usecase.task.ObserveUserTasksUseCase
+import com.umar.taskmanager.domain.usecase.task.UpdateTaskUseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -24,6 +25,7 @@ class TasksViewModel(
     observeCurrentUserIdUseCase: ObserveCurrentUserIdUseCase,
     private val observeUserTasksUseCase: ObserveUserTasksUseCase,
     private val deleteTaskUseCase: DeleteTaskUseCase,
+    private val updateTaskUseCase: UpdateTaskUseCase,
     private val logoutUseCase: LogoutUseCase
 ) : ViewModel() {
 
@@ -82,6 +84,12 @@ class TasksViewModel(
     fun onDeleteTask(task: Task) {
         viewModelScope.launch {
             deleteTaskUseCase(task)
+        }
+    }
+
+    fun onFavoriteClick(task: Task) {
+        viewModelScope.launch {
+            updateTaskUseCase(task.copy(isFavorite = !task.isFavorite))
         }
     }
 

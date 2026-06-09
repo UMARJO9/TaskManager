@@ -9,7 +9,8 @@ fun TaskEntity.toDomain(): Task = Task(
     title = title,
     description = description,
     deadline = deadline,
-    status = status
+    status = status,
+    isFavorite = isFavorite
 )
 
 fun Task.toEntity(): TaskEntity = TaskEntity(
@@ -18,5 +19,6 @@ fun Task.toEntity(): TaskEntity = TaskEntity(
     title = title,
     description = description,
     deadline = deadline,
-    status = status
+    status = status,
+    isFavorite = isFavorite
 )

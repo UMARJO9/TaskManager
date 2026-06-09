@@ -18,6 +18,15 @@ fun AppNavHost(
     navController: NavHostController = rememberNavController(),
     startDestination: String
 ) {
+    fun navigateBackToTasks() {
+        if (!navController.popBackStack()) {
+            navController.navigate(Routes.Task.route) {
+                popUpTo(0)
+                launchSingleTop = true
+            }
+        }
+    }
+
     NavHost(
         navController = navController,
         startDestination = startDestination
@@ -47,8 +56,8 @@ fun AppNavHost(
 
         composable(Routes.AddTask.route) {
             AddTaskScreen(
-                onSaved = { navController.popBackStack() },
-                onBack = { navController.popBackStack() }
+                onSaved = { navigateBackToTasks() },
+                onBack = { navigateBackToTasks() }
             )
         }
 
@@ -61,8 +70,8 @@ fun AppNavHost(
             val taskId = backStackEntry.arguments?.getLong(Routes.EditTask.ARG_TASK_ID) ?: 0L
             AddTaskScreen(
                 taskId = taskId,
-                onSaved = { navController.popBackStack() },
-                onBack = { navController.popBackStack() }
+                onSaved = { navigateBackToTasks() },
+                onBack = { navigateBackToTasks() }
             )
         }
 
@@ -76,7 +85,7 @@ fun AppNavHost(
             TaskDetailScreen(
                 taskId = taskId,
                 onEdit = { navController.navigate(Routes.EditTask.createRoute(taskId)) },
-                onBack = { navController.popBackStack() }
+                onBack = { navigateBackToTasks() }
             )
         }
     }

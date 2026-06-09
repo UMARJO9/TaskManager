@@ -6,11 +6,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -20,6 +17,13 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import com.umar.taskmanager.R
 import com.umar.taskmanager.presentation.viewmodel.auth.AuthUiState
+import com.umar.taskmanager.ui.components.TmButton
+import com.umar.taskmanager.ui.components.TmButtonVariant
+import com.umar.taskmanager.ui.components.TmColors
+import com.umar.taskmanager.ui.components.TmLoading
+import com.umar.taskmanager.ui.components.TmPanel
+import com.umar.taskmanager.ui.components.TmScreen
+import com.umar.taskmanager.ui.components.TmTextField
 
 @Composable
 fun AuthContent(
@@ -29,66 +33,76 @@ fun AuthContent(
     onLoginClick: () -> Unit,
     onRegisterClick: () -> Unit
 ) {
-    Box(
+    TmScreen(
         modifier = Modifier
             .fillMaxSize()
+            .systemBarsPadding()
             .padding(16.dp)
     ) {
-        Column(
-            modifier = Modifier.align(Alignment.Center),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-
-            Text(
-                text = stringResource(R.string.auth_title),
-                style = MaterialTheme.typography.headlineMedium
-            )
-
-            OutlinedTextField(
-                value = state.login,
-                onValueChange = onLoginChange,
-                label = { Text(stringResource(R.string.auth_login)) },
-                modifier = Modifier.fillMaxWidth(),
-                enabled = !state.isLoading
-            )
-
-            OutlinedTextField(
-                value = state.password,
-                onValueChange = onPasswordChange,
-                label = { Text(stringResource(R.string.auth_password)) },
-                modifier = Modifier.fillMaxWidth(),
-                enabled = !state.isLoading,
-                visualTransformation = PasswordVisualTransformation()
-            )
-
-            state.errorRes?.let {
-                Text(
-                    text = stringResource(it),
-                    color = MaterialTheme.colorScheme.error
-                )
-            }
-
-            Button(
-                onClick = onLoginClick,
-                modifier = Modifier.fillMaxWidth(),
-                enabled = !state.isLoading
+        Box(modifier = Modifier.fillMaxSize()) {
+            TmPanel(
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .fillMaxWidth()
             ) {
-                Text(stringResource(R.string.auth_sign_in))
+                Column(
+                    modifier = Modifier.padding(18.dp),
+                    verticalArrangement = Arrangement.spacedBy(14.dp)
+                ) {
+
+                    Text(
+                        text = stringResource(R.string.auth_title),
+                        style = MaterialTheme.typography.headlineMedium,
+                        color = TmColors.Ink
+                    )
+
+                    TmTextField(
+                        value = state.login,
+                        onValueChange = onLoginChange,
+                        label = stringResource(R.string.auth_login),
+                        modifier = Modifier.fillMaxWidth(),
+                        enabled = !state.isLoading,
+                        singleLine = true
+                    )
+
+                    TmTextField(
+                        value = state.password,
+                        onValueChange = onPasswordChange,
+                        label = stringResource(R.string.auth_password),
+                        modifier = Modifier.fillMaxWidth(),
+                        enabled = !state.isLoading,
+                        singleLine = true,
+                        visualTransformation = PasswordVisualTransformation()
+                    )
+
+                    state.errorRes?.let {
+                        Text(
+                            text = stringResource(it),
+                            color = MaterialTheme.colorScheme.error
+                        )
+                    }
+
+                    TmButton(
+                        text = stringResource(R.string.auth_sign_in),
+                        onClick = onLoginClick,
+                        modifier = Modifier.fillMaxWidth(),
+                        enabled = !state.isLoading,
+                        isLoading = state.isLoading
+                    )
+
+                    TmButton(
+                        text = stringResource(R.string.auth_register),
+                        onClick = onRegisterClick,
+                        modifier = Modifier.fillMaxWidth(),
+                        enabled = !state.isLoading,
+                        variant = TmButtonVariant.Secondary
+                    )
+                }
             }
 
-            OutlinedButton(
-                onClick = onRegisterClick,
-                modifier = Modifier.fillMaxWidth(),
-                enabled = !state.isLoading
-            ) {
-                Text(stringResource(R.string.auth_register))
+            if (state.isLoading) {
+                TmLoading(modifier = Modifier.align(Alignment.TopCenter))
             }
-        }
-
-        if (state.isLoading) {
-            CircularProgressIndicator(
-                modifier = Modifier.align(Alignment.Center)
-            )
         }
     }
 }

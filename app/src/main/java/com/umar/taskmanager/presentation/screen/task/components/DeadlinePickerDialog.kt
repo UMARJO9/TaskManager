@@ -1,16 +1,18 @@
 package com.umar.taskmanager.presentation.screen.task.components
 
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SelectableDates
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import com.umar.taskmanager.R
+import com.umar.taskmanager.ui.components.TmButton
+import com.umar.taskmanager.ui.components.TmButtonVariant
 import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -37,22 +39,27 @@ fun DeadlinePickerDialog(
     DatePickerDialog(
         onDismissRequest = onDismiss,
         confirmButton = {
-            TextButton(onClick = {
-                datePickerState.selectedDateMillis?.let { millis ->
-                    val date = Instant.ofEpochMilli(millis)
-                        .atZone(ZoneOffset.UTC)
-                        .toLocalDate()
-                    onDateSelected(date.atStartOfDay())
-                }
-                onDismiss()
-            }) {
-                Text(stringResource(R.string.action_ok))
-            }
+            TmButton(
+                text = stringResource(R.string.action_ok),
+                onClick = {
+                    datePickerState.selectedDateMillis?.let { millis ->
+                        val date = Instant.ofEpochMilli(millis)
+                            .atZone(ZoneOffset.UTC)
+                            .toLocalDate()
+                        onDateSelected(date.atStartOfDay())
+                    }
+                    onDismiss()
+                },
+                modifier = androidx.compose.ui.Modifier.width(112.dp)
+            )
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) {
-                Text(stringResource(R.string.action_cancel))
-            }
+            TmButton(
+                text = stringResource(R.string.action_cancel),
+                onClick = onDismiss,
+                modifier = androidx.compose.ui.Modifier.width(128.dp),
+                variant = TmButtonVariant.Secondary
+            )
         }
     ) {
         DatePicker(state = datePickerState)
