@@ -9,5 +9,6 @@ data class Task(
     val description: String?,
     val deadline: LocalDateTime?,
     val status: TaskStatus,
+    val priority: Priority = Priority.MEDIUM,
     val isFavorite: Boolean = false
 )

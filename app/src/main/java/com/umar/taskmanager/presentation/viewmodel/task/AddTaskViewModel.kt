@@ -3,6 +3,7 @@ package com.umar.taskmanager.presentation.viewmodel.task
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.umar.taskmanager.R
+import com.umar.taskmanager.domain.model.Priority
 import com.umar.taskmanager.domain.model.Task
 import com.umar.taskmanager.domain.model.TaskStatus
 import com.umar.taskmanager.domain.usecase.auth.ObserveCurrentUserIdUseCase
@@ -47,7 +48,8 @@ class AddTaskViewModel(
                             title = task.title,
                             description = task.description.orEmpty(),
                             deadline = task.deadline,
-                            status = task.status
+                            status = task.status,
+                            priority = task.priority
                         )
                     }
                     currentIsFavorite = task.isFavorite
@@ -72,6 +74,10 @@ class AddTaskViewModel(
         _state.update { it.copy(status = value) }
     }
 
+    fun onPriorityChange(value: Priority) {
+        _state.update { it.copy(priority = value) }
+    }
+
     fun clearForm() {
         _state.update {
             it.copy(
@@ -79,6 +85,7 @@ class AddTaskViewModel(
                 description = "",
                 deadline = null,
                 status = TaskStatus.NEW,
+                priority = Priority.MEDIUM,
                 errorRes = null
             )
         }
@@ -103,6 +110,7 @@ class AddTaskViewModel(
             description = current.description.trim().ifBlank { null },
             deadline = current.deadline,
             status = current.status,
+            priority = current.priority,
             isFavorite = currentIsFavorite
         )
 

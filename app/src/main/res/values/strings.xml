@@ -47,6 +47,10 @@
     <string name="status_new">Новая</string>
     <string name="status_in_progress">В работе</string>
     <string name="status_done">Готово</string>
+    <string name="task_priority_label">Приоритет</string>
+    <string name="priority_high">Высокий</string>
+    <string name="priority_medium">Средний</string>
+    <string name="priority_low">Низкий</string>
     <string name="error_generic">Что-то пошло не так</string>
     <string name="error_empty_credentials">Заполните логин и пароль</string>
     <string name="error_password_too_short">Пароль должен содержать минимум 6 символов</string>

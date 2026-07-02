@@ -4,6 +4,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import com.umar.taskmanager.domain.model.Priority
 import com.umar.taskmanager.domain.model.TaskStatus
 import java.time.LocalDateTime
 
@@ -26,5 +27,6 @@ data class TaskEntity(
     val description: String?,
     val deadline: LocalDateTime?,
     val status: TaskStatus = TaskStatus.NEW,
+    val priority: Priority = Priority.MEDIUM,
     val isFavorite: Boolean = false
 )

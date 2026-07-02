@@ -23,8 +23,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.umar.taskmanager.R
+import com.umar.taskmanager.domain.model.Priority
 import com.umar.taskmanager.domain.model.TaskStatus
 import com.umar.taskmanager.presentation.screen.task.components.DeadlinePickerDialog
+import com.umar.taskmanager.presentation.screen.task.components.PrioritySelector
 import com.umar.taskmanager.presentation.screen.task.components.TaskStatusSelector
 import com.umar.taskmanager.presentation.screen.task.components.taskDateFormatter
 import com.umar.taskmanager.presentation.viewmodel.task.AddTaskUiState
@@ -44,6 +46,7 @@ fun AddTaskContent(
     onDescriptionChange: (String) -> Unit,
     onDeadlineChange: (LocalDateTime?) -> Unit,
     onStatusChange: (TaskStatus) -> Unit,
+    onPriorityChange: (Priority) -> Unit,
     onClear: () -> Unit,
     onSave: () -> Unit,
     onBack: () -> Unit
@@ -98,6 +101,12 @@ fun AddTaskContent(
                 TaskStatusSelector(
                     selected = state.status,
                     onStatusChange = onStatusChange,
+                    enabled = !state.isSaving
+                )
+
+                PrioritySelector(
+                    selected = state.priority,
+                    onPriorityChange = onPriorityChange,
                     enabled = !state.isSaving
                 )
 

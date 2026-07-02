@@ -1,6 +1,7 @@
 package com.umar.taskmanager.data.local.convertor
 
 import androidx.room.TypeConverter
+import com.umar.taskmanager.domain.model.Priority
 import com.umar.taskmanager.domain.model.TaskStatus
 import java.time.Instant
 import java.time.LocalDateTime
@@ -28,5 +29,15 @@ class Converters {
     @TypeConverter
     fun toTaskStatus(value: String): TaskStatus {
         return TaskStatus.valueOf(value)
+    }
+
+    @TypeConverter
+    fun fromPriority(priority: Priority): String {
+        return priority.name
+    }
+
+    @TypeConverter
+    fun toPriority(value: String): Priority {
+        return Priority.valueOf(value)
     }
 }

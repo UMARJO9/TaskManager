@@ -30,6 +30,7 @@ fun AddTaskScreen(
         onDescriptionChange = viewModel::onDescriptionChange,
         onDeadlineChange = viewModel::onDeadlineChange,
         onStatusChange = viewModel::onStatusChange,
+        onPriorityChange = viewModel::onPriorityChange,
         onClear = viewModel::clearForm,
         onSave = viewModel::save,
         onBack = onBack

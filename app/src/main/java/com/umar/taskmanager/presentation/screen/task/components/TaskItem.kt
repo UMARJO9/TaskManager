@@ -27,9 +27,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.umar.taskmanager.R
+import com.umar.taskmanager.domain.model.Priority
 import com.umar.taskmanager.domain.model.Task
 import com.umar.taskmanager.domain.model.TaskStatus
 import com.umar.taskmanager.ui.components.TmIconButton
+import com.umar.taskmanager.ui.components.TmShapes
 
 @Composable
 fun TaskItem(
@@ -105,6 +107,8 @@ fun TaskCard(
                     )
                 }
 
+                PriorityBadge(priority = task.priority)
+
                 task.description?.takeIf { it.isNotBlank() }?.let {
                     Text(
                         text = it,
@@ -148,6 +152,38 @@ fun TaskCard(
                     containerColor = statusStyle.buttonContainer
                 )
             }
+        }
+    }
+}
+
+@Composable
+private fun PriorityBadge(
+    priority: Priority,
+    modifier: Modifier = Modifier
+) {
+    val color = priority.color()
+    Surface(
+        modifier = modifier,
+        shape = TmShapes.Pill,
+        color = color.copy(alpha = 0.14f)
+    ) {
+        Row(
+            modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp),
+            horizontalArrangement = Arrangement.spacedBy(6.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(8.dp)
+                    .background(color, MaterialTheme.shapes.extraSmall)
+            )
+            Text(
+                text = priority.label(),
+                style = MaterialTheme.typography.labelMedium,
+                fontWeight = FontWeight.SemiBold,
+                color = color,
+                maxLines = 1
+            )
         }
     }
 }

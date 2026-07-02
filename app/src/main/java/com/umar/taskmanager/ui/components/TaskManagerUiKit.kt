@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,11 +28,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ReadOnlyComposable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -42,23 +44,47 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import com.umar.taskmanager.ui.theme.ActionDisabled
+import com.umar.taskmanager.ui.theme.ActionPressed
+import com.umar.taskmanager.ui.theme.ActionPrimary
+import com.umar.taskmanager.ui.theme.LocalTmColors
+import com.umar.taskmanager.ui.theme.OnAction
+import com.umar.taskmanager.ui.theme.SystemError
+import com.umar.taskmanager.ui.theme.SystemInfo
+import com.umar.taskmanager.ui.theme.SystemSuccess
+import com.umar.taskmanager.ui.theme.SystemWarning
 
 object TmColors {
-    val Background = Color(0xFFF6F7FB)
-    val Surface = Color(0xFFFFFFFF)
-    val SurfaceSoft = Color(0xFFEFF3F8)
-    val Ink = Color(0xFF17212B)
-    val InkMuted = Color(0xFF697586)
-    val Line = Color(0xFFD8E0EA)
-    val Primary = Color(0xFF0D9488)
-    val PrimaryDark = Color(0xFF0F766E)
-    val Accent = Color(0xFFF59E0B)
-    val Danger = Color(0xFFE11D48)
+    val Background: Color @Composable @ReadOnlyComposable get() = LocalTmColors.current.background
+    val Surface: Color @Composable @ReadOnlyComposable get() = LocalTmColors.current.surface
+    val SurfaceSoft: Color @Composable @ReadOnlyComposable get() = LocalTmColors.current.surfaceSoft
+    val Card: Color @Composable @ReadOnlyComposable get() = LocalTmColors.current.card
+    val Line: Color @Composable @ReadOnlyComposable get() = LocalTmColors.current.line
+    val Ink: Color @Composable @ReadOnlyComposable get() = LocalTmColors.current.ink
+    val InkMuted: Color @Composable @ReadOnlyComposable get() = LocalTmColors.current.inkMuted
+    val Hint: Color @Composable @ReadOnlyComposable get() = LocalTmColors.current.hint
+
+    val Primary: Color = ActionPrimary
+    val PrimaryPressed: Color = ActionPressed
+    val PrimaryDisabled: Color = ActionDisabled
+    val OnPrimary: Color = OnAction
+
+    val Success: Color = SystemSuccess
+    val Warning: Color = SystemWarning
+    val Error: Color = SystemError
+    val Info: Color = SystemInfo
+
+    val Danger: Color = SystemError
+
+    val PriorityHigh: Color = com.umar.taskmanager.ui.theme.PriorityHigh
+    val PriorityMedium: Color = com.umar.taskmanager.ui.theme.PriorityMedium
+    val PriorityLow: Color = com.umar.taskmanager.ui.theme.PriorityLow
+    val PriorityCompleted: Color = com.umar.taskmanager.ui.theme.PriorityCompleted
 }
 
 object TmShapes {
-    val Small = RoundedCornerShape(8.dp)
-    val Medium = RoundedCornerShape(14.dp)
+    val Small = RoundedCornerShape(12.dp)
+    val Medium = RoundedCornerShape(16.dp)
     val Large = RoundedCornerShape(20.dp)
     val Pill = RoundedCornerShape(999.dp)
 }
@@ -122,20 +148,28 @@ fun TmButton(
     isLoading: Boolean = false,
     variant: TmButtonVariant = TmButtonVariant.Primary
 ) {
+    val interactionSource = remember { MutableInteractionSource() }
+    val pressed by interactionSource.collectIsPressedAsState()
+
     val background = when (variant) {
-        TmButtonVariant.Primary -> Brush.horizontalGradient(listOf(TmColors.Primary, TmColors.PrimaryDark))
-        TmButtonVariant.Secondary -> SolidColor(TmColors.Surface)
-        TmButtonVariant.Danger -> SolidColor(TmColors.Danger)
+        TmButtonVariant.Primary -> when {
+            !enabled -> TmColors.PrimaryDisabled
+            pressed -> TmColors.PrimaryPressed
+            else -> TmColors.Primary
+        }
+        TmButtonVariant.Secondary -> TmColors.Surface
+        TmButtonVariant.Danger -> TmColors.Danger
     }
     val contentColor = when (variant) {
         TmButtonVariant.Secondary -> TmColors.Ink
-        else -> Color.White
+        else -> TmColors.OnPrimary
     }
+    val disabledAlpha = if (enabled || variant == TmButtonVariant.Primary) 1f else 0.55f
 
     Row(
         modifier = modifier
             .height(52.dp)
-            .alpha(if (enabled) 1f else 0.55f)
+            .alpha(disabledAlpha)
             .background(background, TmShapes.Medium)
             .then(
                 if (variant == TmButtonVariant.Secondary) {
@@ -144,7 +178,12 @@ fun TmButton(
                     Modifier
                 }
             )
-            .clickable(enabled = enabled && !isLoading, onClick = onClick)
+            .clickable(
+                interactionSource = interactionSource,
+                indication = null,
+                enabled = enabled && !isLoading,
+                onClick = onClick
+            )
             .padding(horizontal = 18.dp),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
@@ -225,7 +264,7 @@ fun TmTextField(
                         Text(
                             text = placeholder,
                             style = MaterialTheme.typography.bodyLarge,
-                            color = TmColors.InkMuted
+                            color = TmColors.Hint
                         )
                     }
                     innerTextField()
@@ -243,7 +282,7 @@ fun TmIconButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    tint: Color = TmColors.Ink,
+    tint: Color = TmColors.InkMuted,
     containerColor: Color = TmColors.SurfaceSoft
 ) {
     Box(
@@ -271,7 +310,7 @@ fun TmChip(
     enabled: Boolean = true
 ) {
     val background = if (selected) TmColors.Primary else TmColors.Surface
-    val contentColor = if (selected) Color.White else TmColors.InkMuted
+    val contentColor = if (selected) TmColors.OnPrimary else TmColors.InkMuted
     Surface(
         modifier = modifier
             .alpha(if (enabled) 1f else 0.5f)
@@ -351,20 +390,27 @@ fun TmFab(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val interactionSource = remember { MutableInteractionSource() }
+    val pressed by interactionSource.collectIsPressedAsState()
+
     Box(
         modifier = modifier
             .size(58.dp)
             .background(
-                Brush.linearGradient(listOf(TmColors.Primary, TmColors.PrimaryDark)),
+                if (pressed) TmColors.PrimaryPressed else TmColors.Primary,
                 TmShapes.Large
             )
-            .clickable(onClick = onClick),
+            .clickable(
+                interactionSource = interactionSource,
+                indication = null,
+                onClick = onClick
+            ),
         contentAlignment = Alignment.Center
     ) {
         Icon(
             imageVector = imageVector,
             contentDescription = contentDescription,
-            tint = Color.White
+            tint = TmColors.OnPrimary
         )
     }
 }
@@ -377,9 +423,8 @@ fun TmPanel(
     Surface(
         modifier = modifier,
         shape = TmShapes.Medium,
-        color = TmColors.Surface,
-        border = BorderStroke(1.dp, TmColors.Line),
-        shadowElevation = 1.dp,
+        color = TmColors.Card,
+        shadowElevation = 3.dp,
         content = content
     )
 }
